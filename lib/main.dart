@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http ;
+import 'package:login_retrofit/Login.dart';
 import 'dart:convert';
+
+import 'package:login_retrofit/constant.dart';
 
 
 void main() {
@@ -27,7 +30,7 @@ class MyApp extends StatelessWidget {
 String stringResponse = "";
 late Map mapResponse;
 late Map dataResponse;
-late List list;
+late List _list;
 
 class HomePage extends StatefulWidget{
 
@@ -49,7 +52,7 @@ class HomePage extends StatefulWidget{
            mapResponse = json.decode(response.body); //get whole response
          //  dataResponse = mapResponse['data']; // get specific part of response
 
-          list = mapResponse['data']; // adding to list specifi part
+           _list = mapResponse['data']; // adding to list specifi part
 
         });
       }
@@ -87,17 +90,33 @@ class HomePage extends StatefulWidget{
         
         child: Column(
           children: [
-            Text(list[index]['id'].toString()),
-            Text(list[index]['email'].toString()),
-            Text(list[index]['first_name'].toString()),
-            Text(list[index]['last_name'].toString()),
-            Image.network(list[index]['avatar']),
+            Text(_list[index]['id'].toString()),
+            Text(_list[index]['email'].toString()),
+            Text(_list[index]['first_name'].toString()),
+            Text(_list[index]['last_name'].toString()),
+            Image.network(_list[index]['avatar']),
+            Padding(padding: EdgeInsets.all(20.0),
+              child:TextButton(
+                style: TextButton.styleFrom(backgroundColor: Colors.blue,padding: const EdgeInsets.symmetric(horizontal: 100,vertical: 10),),
+                child: Text("Login",style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 15,
+                  fontWeight: FontWeight.bold,
+
+                ),
+                ),
+                onPressed: () {  Navigator.push(context, MaterialPageRoute(builder: (context)=> LoginScreen()
+                )
+                );
+                },
+              ),
+            ),
           ],
         ),
       );
     
       },
-        itemCount: list == null ?0: list.length,
+        itemCount: _list == null ?0: _list.length,
       ),
     );
   }
